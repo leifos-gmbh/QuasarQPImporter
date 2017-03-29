@@ -20,6 +20,7 @@ class ilQuasarQPImporterUIHookGUI extends ilUIHookPluginGUI
 	protected $qpl_file_name;// original file name sanitized
 	protected $time;//
 	protected $import_directory; //path to import base directory /data/[client name]/qpl_data/qpl_import
+	protected $ref_id;
 
 	function executeCommand()
 	{
@@ -99,6 +100,10 @@ class ilQuasarQPImporterUIHookGUI extends ilUIHookPluginGUI
 		$fi->setRequired(true);
 		$form->addItem($fi);
 
+		$ref = new ilHiddenInputGUI("ref_id");
+		$ref->setValue($_GET['ref_id']);
+		$form->addItem($ref);
+
 		$form->addCommandButton("importFileQuasar", $lng->txt("import"));
 		$form->addCommandButton("cancel", $lng->txt("cancel"));
 
@@ -141,6 +146,8 @@ class ilQuasarQPImporterUIHookGUI extends ilUIHookPluginGUI
 	function uploadQuasarFile()
 	{
 		global $lng;
+
+		$this->ref_id = $_POST['ref_id'];
 
 		if ($_FILES["importfileQuasar"]["error"] > UPLOAD_ERR_OK)
 		{
@@ -396,16 +403,16 @@ class ilQuasarQPImporterUIHookGUI extends ilUIHookPluginGUI
 		$newObj->createReference();
 
 		// put the questionpool object in the administration tree
-		$newObj->putInTree(ROOT_FOLDER_ID);
+		$newObj->putInTree($this->ref_id);
 		// get default permissions and set the permissions for the questionpool object
-		$newObj->setPermissions(ROOT_FOLDER_ID);
+		$newObj->setPermissions($this->ref_id);
 		// notify the questionpool object and all its parent objects that a "new" object was created
-		$newObj->notify("new",ROOT_FOLDER_ID,$_GET["parent_non_rbac_id"],ROOT_FOLDER_ID,$newObj->getRefId());
+		$newObj->notify("new",$this->ref_id,$_GET["parent_non_rbac_id"],$this->ref_id,$newObj->getRefId());
 
 		//$_SESSION["qpl_import_idents"] = $_POST["ident"];
 
 		include_once("./Services/Export/classes/class.ilImport.php");
-		$imp = new ilImport(ROOT_FOLDER_ID);
+		$imp = new ilImport($this->ref_id);
 		$map = $imp->getMapping();
 		$map->addMapping("Modules/TestQuestionPool", "qpl", "new_id", $newObj->getId());
 
