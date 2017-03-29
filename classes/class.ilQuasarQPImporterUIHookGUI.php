@@ -396,16 +396,16 @@ class ilQuasarQPImporterUIHookGUI extends ilUIHookPluginGUI
 		$newObj->createReference();
 
 		// put the questionpool object in the administration tree
-		$newObj->putInTree(1);
+		$newObj->putInTree(ROOT_FOLDER_ID);
 		// get default permissions and set the permissions for the questionpool object
-		$newObj->setPermissions(1);
+		$newObj->setPermissions(ROOT_FOLDER_ID);
 		// notify the questionpool object and all its parent objects that a "new" object was created
-		$newObj->notify("new",1,$_GET["parent_non_rbac_id"],1,$newObj->getRefId());
+		$newObj->notify("new",ROOT_FOLDER_ID,$_GET["parent_non_rbac_id"],ROOT_FOLDER_ID,$newObj->getRefId());
 
 		//$_SESSION["qpl_import_idents"] = $_POST["ident"];
 
 		include_once("./Services/Export/classes/class.ilImport.php");
-		$imp = new ilImport(1);
+		$imp = new ilImport(ROOT_FOLDER_ID);
 		$map = $imp->getMapping();
 		$map->addMapping("Modules/TestQuestionPool", "qpl", "new_id", $newObj->getId());
 
