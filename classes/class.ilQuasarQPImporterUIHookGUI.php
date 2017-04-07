@@ -210,7 +210,7 @@ class ilQuasarQPImporterUIHookGUI extends ilUIHookPluginGUI
 		$xml->load($this->quasar_file);
 
 		$xsl = new DOMDocument();
-		$xsl->load(ILIAS_HTTP_PATH.'/Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/QuasarQPImporter/xsl/qti_parser.xsl');
+		$xsl->load(ilQuasarQPImporterPlugin::getInstance()->getParserFilePath());
 
 		$proc = new XSLTProcessor();
 		$proc->importStylesheet($xsl);
