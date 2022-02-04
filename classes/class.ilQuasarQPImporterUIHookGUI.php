@@ -206,7 +206,10 @@ class ilQuasarQPImporterUIHookGUI extends ilUIHookPluginGUI
 	{
 		global $ilUser, $lng;
 
+		$logger = ilLoggerFactory::getLogger('root');
+
 		$xml = new DOMDocument();
+		$logger->warning($this->quasar_file);
 		$xml->load($this->quasar_file);
 
 		$xsl = new DOMDocument();
@@ -389,27 +392,16 @@ class ilQuasarQPImporterUIHookGUI extends ilUIHookPluginGUI
 			ilUtil::sendFailure($lng->txt("qpl_import_non_ilias_files"), true);
 			return false;
 		}
-		// create new questionpool object
 		$newObj = new ilObjQuestionPool(0, true);
-		// set type of questionpool object
 		$newObj->setType("qpl");
-		// set title of questionpool object to "dummy"
 		$newObj->setTitle($this->qpl_file_name);
-		// set description of questionpool object
 		$newObj->setDescription("questionpool import");
-		// create the questionpool class in the ILIAS database (object_data table)
 		$newObj->create(true);
-		// create a reference for the questionpool object in the ILIAS database (object_reference table)
 		$newObj->createReference();
-
-		// put the questionpool object in the administration tree
 		$newObj->putInTree($this->ref_id);
-		// get default permissions and set the permissions for the questionpool object
 		$newObj->setPermissions($this->ref_id);
-		// notify the questionpool object and all its parent objects that a "new" object was created
-		$newObj->notify("new",$this->ref_id,$_GET["parent_non_rbac_id"],$this->ref_id,$newObj->getRefId());
-
-		//$_SESSION["qpl_import_idents"] = $_POST["ident"];
+		// this is not required anymore?
+		//$newObj->notify("new",$this->ref_id,$_GET["parent_non_rbac_id"],$this->ref_id,$newObj->getRefId());
 
 		include_once("./Services/Export/classes/class.ilImport.php");
 		$imp = new ilImport($this->ref_id);
