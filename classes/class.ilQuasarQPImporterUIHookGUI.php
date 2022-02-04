@@ -89,9 +89,7 @@ class ilQuasarQPImporterUIHookGUI extends ilUIHookPluginGUI
 		include_once("Services/Form/classes/class.ilPropertyFormGUI.php");
 
 		$form = new ilPropertyFormGUI();
-
 		$form->setTarget("_top");
-
 		$form->setFormAction($ilCtrl->getFormActionByClass(array("ilUIPluginRouterGUI","ilQuasarQPImporterUIHookGUI"),"importFileQuasar"));
 
 		include_once("./Services/Form/classes/class.ilFileInputGUI.php");
@@ -103,10 +101,8 @@ class ilQuasarQPImporterUIHookGUI extends ilUIHookPluginGUI
 		$ref = new ilHiddenInputGUI("ref_id");
 		$ref->setValue($_GET['ref_id']);
 		$form->addItem($ref);
-
 		$form->addCommandButton("importFileQuasar", $lng->txt("import"));
 		$form->addCommandButton("cancel", $lng->txt("cancel"));
-
 		return $form->getHTML();
 	}
 
