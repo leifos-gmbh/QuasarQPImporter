@@ -3,10 +3,10 @@
 Plugin to import Quasar questions to ILIAS question pool.
 
 **Minimum ILIAS Version:**
-5.1.0
+7.6
 
 **Maximum ILIAS Version:**
-5.10.999
+7.99
 
 **Supported Languages:**
 English

@@ -1,7 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 /* Copyright (c) 1998-2017 ILIAS open source, Extended GPL, see docs/LICENSE */
 
-include_once("./Services/UIComponent/classes/class.ilUserInterfaceHookPlugin.php");
 
 /**
  * Plugin to import question pools from "Quasar" to ILIAS.
@@ -12,28 +11,24 @@ include_once("./Services/UIComponent/classes/class.ilUserInterfaceHookPlugin.php
  */
 class ilQuasarQPImporterPlugin extends ilUserInterfaceHookPlugin
 {
-	private static $instance = null;
+	private static ?ilQuasarQPImporterPlugin $instance = null;
 
-	const CTYPE = 'Services';
-	const CNAME = 'UIComponent';
-	const SLOT_ID = 'uihk';
-	const PNAME = 'QuasarQPImporter';
-	const PARSER_DIR = "xsl";
-	const PARSER_FILE = "qti_parser.xsl";
+	protected const CTYPE = 'Services';
+    protected const CNAME = 'UIComponent';
+	protected const SLOT_ID = 'uihk';
+	protected const PNAME = 'QuasarQPImporter';
+	protected const PARSER_DIR = "xsl";
+	protected const PARSER_FILE = "qti_parser.xsl";
 
-	/**
-	 * Get singleton instance
-	 * @return \ilQuasarQPImporterPlugin
-	 */
-	public static function getInstance()
+
+	public static function getInstance() : ilQuasarQPImporterPlugin
 	{
-		//global $ilPluginAdmin;
 
 		if(self::$instance)
 		{
 			return self::$instance;
 		}
-		include_once './Services/Component/classes/class.ilPluginAdmin.php';
+
 		return self::$instance = ilPluginAdmin::getPluginObject(
 			self::CTYPE,
 			self::CNAME,
@@ -42,13 +37,13 @@ class ilQuasarQPImporterPlugin extends ilUserInterfaceHookPlugin
 		);
 	}
 
-	function getPluginName()
+	public function getPluginName()
 	{
 		return self::PNAME;
 	}
 
-	function getParserFilePath()
-	{
+	public function getParserFilePath() : string
+    {
 		return parent::getDirectory()."/".self::PARSER_DIR."/".self::PARSER_FILE;
 	}
 }
